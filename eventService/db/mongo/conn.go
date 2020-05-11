@@ -29,8 +29,8 @@ type dbLayer struct {
 // NewMongoDBLayer initialze dbLayer struct
 func NewMongoDBLayer(url string) (*dbLayer, error) {
 	once.Do(func() {
-		session, err := mgo.Dial(url)
-		db.conn = session
+		ss, err := mgo.Dial(url)
+		db = &dbLayer{conn: ss}
 		e = err
 	})
 

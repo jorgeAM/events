@@ -1,6 +1,8 @@
 package db
 
-import "github.com/jorgeAM/events/eventService/db/mongo"
+import (
+	"github.com/jorgeAM/events/eventService/db/mongo"
+)
 
 // TYPE is a custom type to handle database
 type TYPE string
