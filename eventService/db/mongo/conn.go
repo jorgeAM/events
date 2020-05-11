@@ -59,7 +59,7 @@ func (db *dbLayer) ListAvailableEvents() ([]models.Event, error) {
 	defer ss.Close()
 
 	var events []models.Event
-	query := bson.M{"Available": true}
+	query := bson.M{"available": true}
 	err := ss.DB(DATABASE).C(EVENTCOLLECTION).Find(query).All(&events)
 
 	if err != nil {

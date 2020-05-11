@@ -9,7 +9,7 @@ import (
 // Event models
 type Event struct {
 	ID        bson.ObjectId `json:"id" bson:"_id"`
-	Name      string
-	Available bool
-	StartAt   time.Time
+	Name      string        `json:"name" bson:"name"`
+	Available bool          `json:"available" bson:"available"`
+	StartAt   time.Time     `json:"startAt" bson:"startAt"`
 }
