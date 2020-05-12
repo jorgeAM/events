@@ -1,9 +1,12 @@
 package events
 
+import "time"
+
 // EventCreated represents message to emit
 type EventCreated struct {
-	ID   string
-	Name string
+	ID    string    `json:"id"`
+	Name  string    `json:"name"`
+	Start time.Time `json:"start"`
 }
 
 // EventName return name of event

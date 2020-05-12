@@ -7,16 +7,20 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jorgeAM/events/eventService/db"
 	"github.com/jorgeAM/events/eventService/models"
+	"github.com/jorgeAM/events/msgbroker"
+	"github.com/jorgeAM/events/msgbroker/events"
 )
 
 type eventServiceHandler struct {
 	dbHandler db.DatabaseHandler
+	emitter   msgbroker.EventEmitter
 }
 
 // NewEventHandler create new event handler
-func NewEventHandler(dbHandler db.DatabaseHandler) *eventServiceHandler {
+func NewEventHandler(dbHandler db.DatabaseHandler, emitter msgbroker.EventEmitter) *eventServiceHandler {
 	return &eventServiceHandler{
-		dbHandler,
+		dbHandler: dbHandler,
+		emitter:   emitter,
 	}
 }
 
@@ -37,6 +41,14 @@ func (h *eventServiceHandler) CreateEventHandler(w http.ResponseWriter, r *http.
 		w.Write([]byte("Algo salío mal al tratar de crear evento"))
 		return
 	}
+
+	ev := events.EventCreated{
+		ID:    event.ID.Hex(),
+		Name:  event.Name,
+		Start: event.StartAt,
+	}
+
+	h.emitter.Emit(&ev)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
