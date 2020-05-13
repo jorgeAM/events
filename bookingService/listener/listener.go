@@ -4,7 +4,9 @@ import (
 	"log"
 
 	"github.com/jorgeAM/events/bookingService/db"
+	"github.com/jorgeAM/events/bookingService/models"
 	"github.com/jorgeAM/events/msgbroker"
+	"github.com/jorgeAM/events/msgbroker/events"
 )
 
 // EventProccess handle listener and database
@@ -25,11 +27,19 @@ func (ep *EventProccess) Proccess() error {
 	for {
 		select {
 		case event := <-eventChan:
-			log.Println("A")
-			log.Println(event)
+			ep.handleEvent(event)
 		case err = <-errorChan:
-			log.Println("B")
 			log.Printf("received error while processing msg: %s", err)
 		}
+	}
+}
+
+func (ep *EventProccess) handleEvent(event msgbroker.Event) {
+	switch ev := event.(type) {
+	case *events.EventCreated:
+		ep.DBHandler.SaveEvent(models.Event{ID: ev.ID, Name: ev.Name, Start: ev.Start})
+		log.Printf("event %s created %T", ev.ID, ev)
+	default:
+		log.Println("ÑO")
 	}
 }
