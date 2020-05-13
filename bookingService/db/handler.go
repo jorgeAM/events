@@ -6,4 +6,5 @@ import "github.com/jorgeAM/events/bookingService/models"
 type DatabaseHandler interface {
 	SaveBooking(booking *models.Booking) ([]byte, error)
 	SaveEvent(event models.Event) error
+	FindEventByID(id string) (*models.Event, error)
 }

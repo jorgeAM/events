@@ -47,5 +47,5 @@ func main() {
 	go eventProccess.Proccess()
 
 	log.Println("Server starts running")
-	log.Fatal(server.Listen(endpoint))
+	log.Fatal(server.Listen(endpoint, dbhandler))
 }

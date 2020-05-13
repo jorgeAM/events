@@ -50,3 +50,15 @@ func (dbLayer *DBLayer) SaveBooking(booking *models.Booking) ([]byte, error) {
 func (dbLayer *DBLayer) SaveEvent(event models.Event) error {
 	return dbLayer.DB.Create(&event).Error
 }
+
+// FindEventByID retrieves an event
+func (dbLayer *DBLayer) FindEventByID(id string) (*models.Event, error) {
+	var event models.Event
+	err := dbLayer.DB.Where("id = ?", id).First(&event).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &event, nil
+}
