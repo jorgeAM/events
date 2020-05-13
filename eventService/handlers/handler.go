@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -48,9 +47,6 @@ func (h *eventServiceHandler) CreateEventHandler(w http.ResponseWriter, r *http.
 		Name:  event.Name,
 		Start: event.StartAt,
 	}
-
-	log.Println("EMITIENDO ...")
-	log.Println(ev)
 
 	h.emitter.Emit(&ev)
 

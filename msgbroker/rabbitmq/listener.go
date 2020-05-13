@@ -40,15 +40,13 @@ func NewAmqpEventListener(conn *amqp.Connection, queue string) (msgbroker.EventL
 
 func (e *amqpEventListener) Listen(eventNames ...string) (<-chan msgbroker.Event, <-chan error, error) {
 	ch, err := e.conn.Channel()
-	defer ch.Close()
 
 	if err != nil {
 		return nil, nil, err
 	}
 
 	for _, eventName := range eventNames {
-		fmt.Println(eventName)
-		if err := ch.QueueBind(e.queue, "#", "events", false, nil); err != nil {
+		if err := ch.QueueBind(e.queue, eventName, "events", false, nil); err != nil {
 			return nil, nil, err
 		}
 	}
