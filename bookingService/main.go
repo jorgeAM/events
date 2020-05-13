@@ -33,7 +33,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	l, err := rabbitmq.NewAmqpEventListener(conn, "events")
+	l, err := rabbitmq.NewAmqpEventListener(conn, "events_queue")
 
 	if err != nil {
 		log.Fatal(err)
