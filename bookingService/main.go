@@ -15,6 +15,8 @@ func main() {
 	amqpURL := os.Getenv("AMQP_URL")
 
 	log.Println("connecting to message broker")
+
+	log.Println("connecting to message broker")
 	conn, err := amqp.Dial(amqpURL)
 
 	if err != nil {

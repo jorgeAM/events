@@ -13,3 +13,13 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+
+  postgres:
+    image: postgres:12.2
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: booking
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
