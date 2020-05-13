@@ -11,20 +11,21 @@ import (
 )
 
 var (
-	sqlLayer *dbLayer
+	sqlLayer *DBLayer
 	once     sync.Once
 	e        error
 )
 
-type dbLayer struct {
+// DBLayer handle connection
+type DBLayer struct {
 	DB *gorm.DB
 }
 
 // NewSQLLayer handle connection with database
-func NewSQLLayer(engine string, url string) (*dbLayer, error) {
+func NewSQLLayer(engine string, url string) (*DBLayer, error) {
 	once.Do(func() {
 		db, err := gorm.Open(engine, url)
-		sqlLayer = &dbLayer{
+		sqlLayer = &DBLayer{
 			DB: db,
 		}
 
@@ -34,7 +35,8 @@ func NewSQLLayer(engine string, url string) (*dbLayer, error) {
 	return sqlLayer, e
 }
 
-func (dbLayer *dbLayer) SaveBooking(booking *models.Booking) ([]byte, error) {
+// SaveBooking saves booking
+func (dbLayer *DBLayer) SaveBooking(booking *models.Booking) ([]byte, error) {
 	err := dbLayer.DB.Create(booking).Error
 
 	if err != nil {
@@ -44,6 +46,7 @@ func (dbLayer *dbLayer) SaveBooking(booking *models.Booking) ([]byte, error) {
 	return json.Marshal(booking)
 }
 
-func (dbLayer *dbLayer) SaveEvent(event models.Event) error {
+// SaveEvent saves event
+func (dbLayer *DBLayer) SaveEvent(event models.Event) error {
 	return dbLayer.DB.Create(&event).Error
 }

@@ -6,6 +6,7 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/jorgeAM/events/bookingService/db"
+	"github.com/jorgeAM/events/bookingService/listener"
 	"github.com/jorgeAM/events/bookingService/server"
 	"github.com/jorgeAM/events/msgbroker/rabbitmq"
 	"github.com/streadway/amqp"
@@ -18,8 +19,8 @@ func main() {
 	amqpURL := os.Getenv("AMQP_URL")
 
 	log.Println("connecting to database")
-	dbhandler, err := db.NewSQLLayer(database, databaseURL)
-	defer dbhandler.DB.Close()
+	dbhandler, err := db.NewPersistenceLayer(db.TYPE(database), databaseURL)
+	defer dbhandler.(*db.DBLayer).DB.Close()
 
 	if err != nil {
 		log.Fatal(err)
@@ -32,11 +33,18 @@ func main() {
 		log.Fatal(err)
 	}
 
-	_, err = rabbitmq.NewAmqpEventListener(conn, "events")
+	l, err := rabbitmq.NewAmqpEventListener(conn, "events")
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	eventProccess := &listener.EventProccess{
+		Listener:  l,
+		DBHandler: dbhandler,
+	}
+
+	go eventProccess.Proccess()
 
 	log.Println("Server starts running")
 	log.Fatal(server.Listen(endpoint))

@@ -47,7 +47,8 @@ func (e *amqpEventListener) Listen(eventNames ...string) (<-chan msgbroker.Event
 	}
 
 	for _, eventName := range eventNames {
-		if err := ch.QueueBind(e.queue, eventName, "events", false, nil); err != nil {
+		fmt.Println(eventName)
+		if err := ch.QueueBind(e.queue, "#", "events", false, nil); err != nil {
 			return nil, nil, err
 		}
 	}
