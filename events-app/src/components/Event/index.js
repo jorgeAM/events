@@ -11,13 +11,13 @@ const container = css`
 
 const Event = (props) => {
   const {
-    event: { name, available, startAt },
+    event: { id, name, available, startAt },
   } = props;
 
   return (
     <div css={container}>
       <EventName name={name} />
-      <EventDetails available={available} startAt={startAt} />
+      <EventDetails id={id} available={available} startAt={startAt} />
     </div>
   );
 };
