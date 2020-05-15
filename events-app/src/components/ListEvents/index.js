@@ -1,13 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Event from "../Event";
 
-const ListEvents = (props) => {
-  const { events } = props;
+const ListEvents = () => {
+  const [events, setEvents] = useState([]);
 
-  useEffect(async () => {
-    const rest = await fetch(process.env.REACT_APP_EVENT_SERVICE);
-    const json = await rest.json();
-    console.log(json);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const rest = await fetch(process.env.REACT_APP_EVENT_SERVICE);
+      const json = await rest.json();
+      setEvents(json);
+    };
+
+    fetchEvents();
   }, []);
 
   return (
