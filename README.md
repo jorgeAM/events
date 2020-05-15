@@ -5,7 +5,8 @@ First at all run `docker-compose up -d`
 To run microservice just do the following:
 1. go to the root of event service
 2. run `go mod download`
-3. `go run main.go`
+4. fill up .env file
+5. `go run main.go`
 
 
 ## Booking Service
@@ -16,6 +17,7 @@ To run microservice just do the following:
 
 to run migrations just write these command `goose -dir "migrations" postgres "postgres_url" up -v`
 
-4. `go run main.go`
+4. fill up .env file
+5. `go run main.go`
 
 PS: your feedbacks are welcome 
