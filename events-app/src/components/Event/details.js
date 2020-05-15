@@ -3,6 +3,7 @@ import { css, jsx } from "@emotion/core";
 import Switch from "react-switch";
 import { useState } from "react";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 const style = css`
   display: flex;
@@ -23,6 +24,8 @@ const button = css`
 `;
 
 const EventDetail = (props) => {
+  const history = useHistory();
+
   const { id, startAt, available } = props;
 
   const [checked, setChecked] = useState(available);
@@ -32,7 +35,7 @@ const EventDetail = (props) => {
   };
 
   const onClick = () => {
-    console.log(id);
+    history.push(`/events/${id}/booking`);
   };
 
   return (

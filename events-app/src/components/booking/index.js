@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import { useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
 const container = css`
   padding: 0 10%;
@@ -40,14 +41,26 @@ const button = css`
 `;
 
 const Booking = () => {
-  const [seats, setSeats] = useState(0);
+  const { id } = useParams();
+  const history = useHistory();
+
+  const [seats, setSeats] = useState(1);
 
   const onChange = (ev) => {
     setSeats(ev.target.value);
   };
 
-  const onClick = () => {
-    console.log(seats);
+  const onClick = async () => {
+    const rest = await fetch(
+      `${process.env.REACT_APP_BOOKING_SERVICE}/${id}/booking`,
+      {
+        method: "POST",
+        body: JSON.stringify({ seats: parseInt(seats) }),
+      }
+    );
+
+    await rest.json();
+    history.push(`/events/`);
   };
 
   return (
